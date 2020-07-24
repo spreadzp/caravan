@@ -1,0 +1,46 @@
+<h1>ACTIVE DOCTORS</h1>
+<div class="example-container mat-elevation-z8">
+  <mat-table *ngIf="showTable"  #table  [class.isMobile]="isMobile"  [dataSource]="doctors" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">Name:</span>
+        {{doctor.name}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="resumeUrl">
+      <mat-header-cell *matHeaderCellDef> URL </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">URL:</span>
+        {{doctor.resumeUrl}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="specialization">
+      <mat-header-cell *matHeaderCellDef> Specialization </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">Specialization:</span>
+        {{doctor.specialization}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="rating">
+      <mat-header-cell *matHeaderCellDef> Rating </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">Rating:</span>
+        {{doctor.rating}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="orders">
+      <mat-header-cell *matHeaderCellDef> Orders </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">Orders:</span>
+        {{doctor.orders}}
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <!-- <div *ngFor="let ticket of gamersTickets">{{ticket.addressGamer}} : {{ticket.numberTicket}}</div> -->
+  </div>
+
