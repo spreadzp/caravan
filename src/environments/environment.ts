@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: 'AIzaSyCMGQy5IgIzH_QGtgn27tkrTjtRvgX1ohU',
+    authDomain: 'caravan-hlt.firebaseapp.com',
+    databaseURL: 'https://caravan-hlt.firebaseio.com',
+    projectId: 'caravan-hlt',
+    storageBucket: 'caravan-hlt.appspot.com',
+    messagingSenderId: '754546541234',
+    appId: '1:754546541234:web:0730b3f5574abc79c93fab',
+    measurementId: 'G-8TPCC7TG8F'
+  }
 };
 
 /*

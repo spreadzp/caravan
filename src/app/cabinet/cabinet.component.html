@@ -1,1 +1,53 @@
-<p>cabinet works!</p>
+<h1>CABINET</h1>
+<div class="example-container mat-elevation-z8">
+  <mat-table *ngIf="showTable"  #table  [class.isMobile]="isMobile"  [dataSource]="cabinets" class="mat-elevation-z8">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let  cabinet">
+        <span class="mobile-label">Name:</span>
+        {{ cabinet.name}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="resumeUrl">
+      <mat-header-cell *matHeaderCellDef> URL </mat-header-cell>
+      <mat-cell *matCellDef="let  cabinet">
+        <span class="mobile-label">URL:</span>
+        {{ cabinet.resumeUrl}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="specialization">
+      <mat-header-cell *matHeaderCellDef> Specialization </mat-header-cell>
+      <mat-cell *matCellDef="let  cabinet">
+        <span class="mobile-label">Specialization:</span>
+        {{ cabinet.specialization}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="rating">
+      <mat-header-cell *matHeaderCellDef> Rating </mat-header-cell>
+      <mat-cell *matCellDef="let  cabinet">
+        <span class="mobile-label">Rating:</span>
+        {{ cabinet.rating}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="orders">
+      <mat-header-cell *matHeaderCellDef> Orders </mat-header-cell>
+      <mat-cell *matCellDef="let  cabinet">
+        <span class="mobile-label">Orders:</span>
+        {{ cabinet.orders}}
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="uploadInfo">
+      <mat-header-cell *matHeaderCellDef> Upload </mat-header-cell>
+      <mat-cell *matCellDef="let cabinet">
+        <span class="mobile-label">Upload:</span>
+        <button mat-button (click)="openDialog(cabinet)">Upload File</button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <!-- <div *ngFor="let ticket of gamersTickets">{{ticket.addressGamer}} : {{ticket.numberTicket}}</div> -->
+  </div>
+
+

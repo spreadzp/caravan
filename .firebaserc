@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "caravan-hlt"
+  },
+  "targets": {
+    "caravan-hlt": {
+      "hosting": {
+        "caravan": [
+          "caravan-hlt"
+        ]
+      }
+    }
+  }
+}

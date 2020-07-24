@@ -37,6 +37,20 @@
         {{doctor.orders}}
       </mat-cell>
     </ng-container>
+     <ng-container matColumnDef="info">
+      <mat-header-cell *matHeaderCellDef> Info </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">Info:</span>
+        <button>More Info</button>
+      </mat-cell>
+    </ng-container>
+     <ng-container matColumnDef="order">
+      <mat-header-cell *matHeaderCellDef> Order </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">Order:</span>
+        <button mat-button (click)="openDialog(doctor)">Open dialog</button>
+      </mat-cell>
+    </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
@@ -12,7 +12,8 @@
     "c-mig": "truffle compile && truffle migrate --reset",
     "gan-cli": "ganache-cli -m 'puzzle crazy electric wide verify popular struggle latin genuine lawsuit thrive neck'",
     "deploy-github-pages": "ng build --prod --base-href https://spreadzp.github.io/caravan/ --deploy-url=https://spreadzp.github.io/caravan/",
-    "deploy-gp": "ng deploy --base-href=/caravan/"
+    "deploy-gp": "npx deploy-gh --base-href=/caravan/",
+    "deploy-firebase": "ng deploy --preview"
   },
   "private": true,
   "dependencies": {
@@ -21,18 +22,22 @@
     "@angular/common": "~9.1.11",
     "@angular/compiler": "~9.1.11",
     "@angular/core": "~9.1.11",
+    "@angular/fire": "^6.0.2",
     "@angular/forms": "~9.1.11",
     "@angular/material": "^9.2.4",
     "@angular/platform-browser": "~9.1.11",
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
     "@truffle/contract": "^4.2.13",
+    "angular-cli-ghpages": "^0.6.2",
     "dotenv": "^8.2.0",
+    "eth-crypto": "^1.6.0",
     "ethers": "^4.0.37",
-    "truffle-hdwallet-provider": "^1.0.17",
-    "web3": "1.2.1",
+    "firebase": "^7.13.1",
     "rxjs": "~6.5.4",
+    "truffle-hdwallet-provider": "^1.0.17",
     "tslib": "^1.10.0",
+    "web3": "1.2.1",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
@@ -53,7 +58,13 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~3.8.3"
+    "typescript": "~3.8.3",
+    "@angular-devkit/architect": ">= 0.900 < 0.1100",
+    "firebase-tools": "^8.0.0",
+    "fuzzy": "^0.1.3",
+    "inquirer": "^6.2.2",
+    "inquirer-autocomplete-prompt": "^1.0.1",
+    "open": "^7.0.3"
   },
   "browser": {
     "fs": false

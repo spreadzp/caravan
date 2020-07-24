@@ -123,9 +123,23 @@
               "devServerTarget": "caravan:serve:production"
             }
           }
+        },
+        "deploy-gh": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
+        },
+        "deploy-firebase": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "ssr": true
+          }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
     }
   },
-  "defaultProject": "caravan",
+  "defaultProject": "caravan"
 }

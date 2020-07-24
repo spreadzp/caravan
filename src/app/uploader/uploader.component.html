@@ -1,0 +1,50 @@
+
+<h2 mat-dialog-title>Install Angular</h2>
+<mat-dialog-content class="mat-typography">
+  <h3>Develop across all platforms</h3>
+  <div
+  class="dropzone"
+  app-dropzone
+  (hovered)="toggleHover($event)"
+  (dropped)="onDrop($event)"
+  [class.hovering]="isHovering"
+>
+<!--  -->
+  <form class="upload__container">
+    <!-- <textarea
+      name="message"
+      #message="ngModel"
+      cols="30"
+      rows="5"
+      [(ngModel)]="descriptionFile"
+      placeholder="pass a file"
+    ></textarea> -->
+    <select
+      name="selectedQuantity"
+      id="aantal"
+      class="form-control"
+      [value]="pathToBucket"
+    >
+      <option *ngFor="let option of options" [value]="option">{{
+        option
+      }}</option>
+    </select>
+    <!-- <div>{{ this.translate.data["DRAG_DROP"] | translate }}</div> -->
+    <input type="file" (change)="onChange($event)" />
+  </form>
+
+  <!-- <button (click)="save()">Save</button> -->
+</div>
+
+<div *ngFor="let file of files">
+  <app-upload-task
+    [file]="file"
+    [pathToBucket]="pathToBucket"
+    [descriptionFile]="descriptionFile"
+  ></app-upload-task>
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button [disabled]="downloadURL === ''" mat-button [mat-dialog-close]="true" cdkFocusInitial>Make Order</button>
+</mat-dialog-actions>
