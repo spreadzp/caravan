@@ -54,8 +54,8 @@ export class CabinetComponent implements OnInit {
       const t = deployed.then((contract) => {
         console.log('contract :>> ', contract);
         console.log('this.activeAccount :>> ', this.activeAccount);
-        // contract.registerDoctor(cabinet.name, this.urlClientData, cabinet.specialization, { from: this.activeAccount, gas: 900000 })
-        contract.totalTokens.call({ from: this.activeAccount})
+        contract.registerDoctor(cabinet.name, this.urlClientData, cabinet.specialization, { from: this.activeAccount, gas: 900000 })
+        // contract.totalTokens.call({ from: this.activeAccount})
           .then((result) => { // set current address !!!
             console.log('result :>> ', result);
             if (result && result.logs && result.logs[0]) {

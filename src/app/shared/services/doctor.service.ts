@@ -7,7 +7,7 @@ import { Doctor } from '../interfaces/doctor.interface';
 })
 export class DoctorService {
   doctors: Doctor[] = [{
-    name: 'string',
+    name: 'John',
     resumeUrl: 'string',
     specialization: 'string',
     rating: 1,

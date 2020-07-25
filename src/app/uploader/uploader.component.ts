@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from '../shared/services/file.service';
-import { CypherService } from '../shared/services/cypher.service';
+// import { CypherService } from '../shared/services/cypher.service';
 
 @Component({
   selector: 'app-uploader',
@@ -18,18 +18,18 @@ export class UploaderComponent implements OnInit {
   fileContent: string | ArrayBuffer = '';
   encryptedContent: string | ArrayBuffer = '';
   decryptedContent = '';
-
-  constructor(private fstorage: FileService, private cypherService: CypherService ) {}
+  // , private cypherService: CypherService
+  constructor(private fstorage: FileService) {}
   ngOnInit() {
     this.fstorage.urlUploadedFile.subscribe(newUrl => this.downloadURL = newUrl);
-    this.cypherService.encryptedMessage.subscribe(cypher => {
-      if (cypher) {
-        this.encryptedContent = cypher;
-        this.cypherService.decrypted(this.encryptedContent);
-        this.createEncFile(this.encryptedContent);
-      }
-    } );
-    this.cypherService.decryptedMessage.subscribe(message => this.decryptedContent = message );
+    // this.cypherService.encryptedMessage.subscribe(cypher => {
+    //   if (cypher) {
+    //     this.encryptedContent = cypher;
+    //     this.cypherService.decrypted(this.encryptedContent);
+    //     this.createEncFile(this.encryptedContent);
+    //   }
+    // } );
+    // this.cypherService.decryptedMessage.subscribe(message => this.decryptedContent = message );
   }
 
   toggleHover(event: boolean) {
@@ -57,6 +57,7 @@ export class UploaderComponent implements OnInit {
 
   async onChange($event) {
     await this.readText($event.target['files'], true);
+    this.onDrop($event.target['files']);
     if (this.encryptedContent !== '') {
 
     }
@@ -68,11 +69,12 @@ export class UploaderComponent implements OnInit {
     const self = this;
     fileReader.onloadend = (x) => {
       self.fileContent = fileReader.result;
-      if (isEncrypt) {
-        this.cypherService.encrypted(self.fileContent);
-      } else {
-        this.cypherService.decrypted(self.fileContent);
-      }
+
+      // if (isEncrypt) {
+      //   this.cypherService.encrypted(self.fileContent);
+      // } else {
+      //   this.cypherService.decrypted(self.fileContent);
+      // }
     };
     fileReader.readAsText(file);
   }

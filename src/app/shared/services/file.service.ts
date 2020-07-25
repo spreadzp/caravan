@@ -4,7 +4,6 @@ import {
   AngularFireDatabase,
   SnapshotAction,
 } from '@angular/fire/database';
-import { AngularFirestore } from '@angular/fire/firestore';
 import {
   AngularFireStorage,
   AngularFireUploadTask,
@@ -28,7 +27,8 @@ export class FileService {
   urlUploadedFile = this.urlFileSource$.asObservable();
   constructor(
     // @Inject(AngularFireDatabase) private firebase: AngularFireDatabase,
-    private db: AngularFirestore,
+
+    // private db: AngularFirestore,
     @Inject(AngularFireStorage) private storage: AngularFireStorage
   ) { }
 
@@ -55,52 +55,6 @@ export class FileService {
       .ref('test/')
       .listAll()
       .subscribe((r) => console.log('r :>> ', r));
-    console.log('t :>> ', t);
-    // Reference to storage bucket
-    //     const ref = this.storage.firestore.collection(path).get()
-    //     .then(r => console.log('r :>> ', r))
-    //     // .subscribe( t => console.log('test :>> ', t));
-    // console.log('ref :>> ', ref);
-
-    // The main task
-    //   const r = this.storage.storage.ref(ref);
-
-    //   // Progress monitoring
-    // return  r.listAll()
-    //   .then(file => console.log('file :>> ', file));
-
-    // this.snapshot = this.task.snapshotChanges().pipe(
-    //   tap(console.log),
-    //   // The file's download URL
-    //   finalize(async () => {
-    //     this.downloadURL = await ref.getDownloadURL().toPromise();
-
-    //     this.db
-    //       .collection('files')
-    //       .add({ downloadURL: this.downloadURL, path });
-    //   })
-    // );
-    // return this.store.collection(bucketName).valueChanges()
-    // return this.firebase.list(bucketName).valueChanges();
-    //  return this.firebase.list('bucketName').snapshotChanges().subscribe((list) => {
-    //    console.log('list :>> ', list);
-    //     this.fileList = list.map((item) => {
-    //       return item.payload.val();
-    //     });
-    //     console.log('this.fileList:>> ', this.fileList);
-
-    //   });
-    // return this.firebase.list(bucketName).query((list) => {
-    //   if(list ) {
-    //     return list;
-    //   }
-
-    // });
-    // return this.firebase.object(bucketName);
-    // return this.firebase.list(bucketName, (ref) => {
-    //   console.log('ref :>> ', ref);
-    //   return ref.limitToLast(3);
-    // });
   }
   changeUrl(newUrl: string) {
     this.urlOfFile = newUrl;
@@ -112,9 +66,9 @@ export class FileService {
         return item.payload.val();
       });
       this.fileList.forEach((element) => {
-        if (element.id === value) this.msg = element.url;
+        if (element.id === value) { this.msg = element.url; }
       });
-      if (this.msg === 'error') alert('No record found');
+      if (this.msg === 'error') { alert('No record found'); }
       else {
         // window.open(this.msg);
         this.msg = 'error';

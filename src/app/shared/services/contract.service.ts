@@ -61,8 +61,8 @@ export class ContractService {
     return this.web3Service
       .artifactsToContract(caravanArtifacts)
       .then(async (JackPotAbstraction) => {
-        return JackPotAbstraction.deployed();
-       // return JackPotAbstraction.at('0xfd6c41cd602681d9788234e4e56ff4bee86e55a9');
+        // return JackPotAbstraction.deployed();
+       return JackPotAbstraction.at('0xD05D2587bBc6eD91EDfF3235A641CC32604e4e2D');
       });
   }
 }

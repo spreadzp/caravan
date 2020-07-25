@@ -340,6 +340,7 @@ contract CaravanBoard is CaravanToken, Patient, CaravanStatistics {
     uint public doctorCount;
     mapping (uint => Doctor) public totalDoctors;
     mapping (address => Doctor) public areaOfDoctor;
+    mapping (address => Order[]) public doctorOrders;
     struct Doctor {
       address doctorEthAddress;
       string name;
@@ -378,7 +379,7 @@ contract CaravanBoard is CaravanToken, Patient, CaravanStatistics {
       return true;
     }
 
-    function buyTicket() public pure returns (bool) {
+    function makeDoctorOrder(uint256 indexDoctor) public pure returns (bool) {
 
         // balanceOf[msg.sender] = balanceOf[msg.sender].sub(ticketPrice);
 

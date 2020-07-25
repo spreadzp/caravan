@@ -34,7 +34,6 @@ import { DropzoneDirective } from './shared/directives/dropzone.directive';
 
 import { FireBaseConfig } from 'src/environments/firebase.config';
 import { CabinetService } from './shared/services/cabinet.service';
-import { CypherService } from './shared/services/cypher.service';
 import { ContractService } from './shared/services/contract.service';
 
 @NgModule({
@@ -70,7 +69,7 @@ import { ContractService } from './shared/services/contract.service';
     AngularFireAuthModule,
     MatSnackBarModule
   ],
-  providers: [Web3Service, DoctorService, PatientService, OrderService, FileService, CabinetService, CypherService, ContractService],
+  providers: [Web3Service, DoctorService, PatientService, OrderService, FileService, CabinetService, ContractService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
