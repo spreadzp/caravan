@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FileService } from '../shared/services/file.service';
+import { CypherService } from '../shared/services/cypher.service';
 
 @Component({
   selector: 'app-uploader',
@@ -14,10 +15,18 @@ export class UploaderComponent implements OnInit {
   options: string[] = ['prices', 'shoes', 'uniform', 'defending'];
   pathToBucket = this.options[0];
   downloadURL = '';
-
-  constructor(private fstorage: FileService ) {}
+  fileContent: string | ArrayBuffer = '';
+  encryptedContent: string | ArrayBuffer = '';
+  decryptedContent = '';
+  constructor(private fstorage: FileService, private cypherService: CypherService ) {}
   ngOnInit() {
     this.fstorage.urlUploadedFile.subscribe(newUrl => this.downloadURL = newUrl);
+    this.cypherService.encryptedMessage.subscribe(cypher => {
+      this.encryptedContent = cypher;
+      this.cypherService.decrypted(this.encryptedContent);
+      this.createEncFile(this.encryptedContent);
+    } );
+    this.cypherService.decryptedMessage.subscribe(message => this.decryptedContent = message );
   }
   toggleHover(event: boolean) {
     this.isHovering = event;
@@ -30,10 +39,53 @@ export class UploaderComponent implements OnInit {
     }
   }
 
-  onChange($event) {
+  createEncFile(encryptedContent: string | ArrayBuffer) {
+    // const file = new File([encryptedContent], "patient.txt", {
+    //   type: "text/plain",
+    // });
+    // console.log('encryptedContent :>> ', encryptedContent);
+    // console.log('file :>> ', file);
+    // const files: FileList = new FileList();
+    // files.item[0] = file;
+    console.log('encryptedContent :>> ', encryptedContent);
+    if((encryptedContent).toString().length > 50) {
+      const list = new DataTransfer();
+      const file = new File([encryptedContent], "patient.txt");
+      list.items.add(file);
+
+      const myFileList = list.files;
+      this.onDrop(myFileList);
+    }
+
+  }
+  async onChange($event) {
     // console.log(' event.target[ ] :>> ', $event.target['files']);
-    this.onDrop($event.target['files']);
+
+    await this.readText($event.target['files'], true);
+    if (this.encryptedContent !== '') {
+
+    }
+
     // console.log('pathToBucket :>> ', this.pathToBucket);
+  }
+
+
+
+  public readText(fileList: FileList, isEncrypt: boolean): void {
+    const file = fileList[0];
+    const fileReader: FileReader = new FileReader();
+    const self = this;
+    fileReader.onloadend = (x) => {
+      self.fileContent = fileReader.result;
+      if (isEncrypt) {
+        this.cypherService.encrypted(self.fileContent);
+      } else {
+        this.cypherService.decrypted(self.fileContent);
+      }
+
+
+    };
+    fileReader.readAsText(file);
   }
 
   showPreview($event) {

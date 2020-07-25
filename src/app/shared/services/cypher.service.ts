@@ -7,30 +7,12 @@ import * as EthCrypto from 'eth-crypto';
   providedIn: 'root',
 })
 export class CypherService {
-  orders: Order[] = [{
-    name: 'string',
-    resumeUrl: 'string',
-    specialization: 'string',
-    rating: 1,
-    orders: 'string'
-  },
-  {
-    name: 'asdfdas',
-    resumeUrl: 'url2',
-    specialization: 'asfdaf4',
-    rating: 3,
-    orders: 'string'
-  },
-  {
-    name: 'string',
-    resumeUrl: 'string',
-    specialization: 'string',
-    rating: 5,
-    orders: 'string'
-  },
-  ];
-  private ordersSource$ = new BehaviorSubject(this.orders);
-  ordersBoard = this.ordersSource$.asObservable();
+  message: string | ArrayBuffer = '';
+  private encryptedSource$ = new BehaviorSubject(this.message);
+  encryptedMessage = this.encryptedSource$.asObservable();
+  cypherMessage = '';
+  private decryptedSource$ = new BehaviorSubject(this.cypherMessage);
+  decryptedMessage = this.decryptedSource$.asObservable();
   secretMessage = 'My name is Satoshi Buterin';
   alice = EthCrypto.createIdentity();
 
@@ -45,23 +27,26 @@ export class CypherService {
   // create identitiy with key-pairs and address
 
 
-  async encrypted(secretMessage: string) {
-    return await EthCrypto.encryptWithPublicKey(
+   async encrypted(secretMessage: string | ArrayBuffer ) {
+    console.log('this.alice.publicKey :>> ', this.alice.publicKey);
+    const encryptedResult = await EthCrypto.encryptWithPublicKey(
       this.alice.publicKey, // encrypt with alice's publicKey
-      secretMessage
+      secretMessage.toString()
     );
+    const encryptedString = EthCrypto.cipher.stringify(encryptedResult);
+    this.encryptedSource$.next(encryptedString);
   }
 
   async decrypted(encrypted) {
-    const decryptedMessage = await EthCrypto.decryptWithPrivateKey(
+    const encryptedObject = EthCrypto.cipher.parse(encrypted);
+    console.log('encryptedObject :>> ', encryptedObject);
+    console.log('this.alice.privateKey :>> ', this.alice.privateKey);
+    const decMessage = await EthCrypto.decryptWithPrivateKey(
       this.alice.privateKey,
-      encrypted
+      encryptedObject
     );
-    if (decryptedMessage === this.secretMessage) {
-      console.log('success');
-      return decryptedMessage;
-    }
-
+    console.log('decMessage :>> ', decMessage);
+    this.decryptedSource$.next(decMessage);
   }
 }
 

@@ -32,7 +32,18 @@
     <!-- <div>{{ this.translate.data["DRAG_DROP"] | translate }}</div> -->
     <input type="file" (change)="onChange($event)" />
   </form>
-
+  <div>
+    <h3>File Content</h3>
+    <pre> {{fileContent}} </pre>
+  </div>
+  <div>
+    <h3>Encrypted Content</h3>
+    <pre> {{encryptedContent}} </pre>
+  </div>
+  <div>
+    <h3>Decrypted Content</h3>
+    <pre> {{decryptedContent}} </pre>
+  </div>
   <!-- <button (click)="save()">Save</button> -->
 </div>
 
