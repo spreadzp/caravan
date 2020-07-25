@@ -23,9 +23,11 @@ export class UploaderComponent implements OnInit {
   ngOnInit() {
     this.fstorage.urlUploadedFile.subscribe(newUrl => this.downloadURL = newUrl);
     this.cypherService.encryptedMessage.subscribe(cypher => {
-      this.encryptedContent = cypher;
-      this.cypherService.decrypted(this.encryptedContent);
-      this.createEncFile(this.encryptedContent);
+      if (cypher) {
+        this.encryptedContent = cypher;
+        this.cypherService.decrypted(this.encryptedContent);
+        this.createEncFile(this.encryptedContent);
+      }
     } );
     this.cypherService.decryptedMessage.subscribe(message => this.decryptedContent = message );
   }

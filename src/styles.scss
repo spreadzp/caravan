@@ -3,11 +3,11 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-.dropzone { 
+.dropzone {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column; 
+  flex-direction: column;
   min-width: 60vw;
   font-weight: 200;
   height: 300px;
@@ -28,4 +28,41 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 progress::-webkit-progress-value {
   transition: width 0.1s ease;
+}
+
+table {
+  width: 100%;
+}
+.example-container {
+  display: flex;
+  flex-direction: column;
+  max-height: 500px;
+  min-width: 300px;
+}
+
+.mat-table {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.mobile-label {
+  display: none;
+}
+
+@media(max-width: 600px) {
+  .mobile-label {
+    width: 80px;
+    display: inline-block;
+        font-weight: bold;
+  }
+
+  .mat-header-row {
+    display: none;
+  }
+
+  .mat-row {
+    flex-direction: column;
+    align-items: start;
+    padding: 8px 24px;
+  }
 }

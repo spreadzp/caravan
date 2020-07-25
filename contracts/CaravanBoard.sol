@@ -1,4 +1,6 @@
-pragma solidity >=0.4.21 <0.7.0;
+// pragma solidity >=0.4.21 <0.7.0;
+pragma experimental ABIEncoderV2;
+// pragma solidity ^0.6.1;
 
 contract IFactRegistry {
     /*
@@ -6,7 +8,7 @@ contract IFactRegistry {
     */
     function isValid(bytes32 fact) external view returns (bool);
 }
- 
+
 /**
  * @title Ownable
  * @dev The Ownable contract has an owner address, and provides basic authorization control
@@ -328,129 +330,70 @@ contract Order {
     uint256 amount;
 }
 
-contract Doctor {
-  address payable public doctorEthAddress;
-
-  struct Info {
-    bytes32 name;
-    bytes32 resumeUrl;
-    bytes32 specialization;
-    uint256 rating;
-    Order[] orders;
-  }
-}
-
 contract Patient {
   address patientAddress;
   uint256 totalPayments;
 }
-contract CaravanBoard is CaravanToken, Doctor, Patient, CaravanStatistics {
+contract CaravanBoard is CaravanToken, Patient, CaravanStatistics {
     using SafeMath for uint256;
+    uint256 public totalTokens = 10 ** 12;
+    uint public doctorCount;
+    mapping (uint => Doctor) public totalDoctors;
+    mapping (address => Doctor) public areaOfDoctor;
+    struct Doctor {
+      address doctorEthAddress;
+      string name;
+      string resumeUrl;
+      string area;
+      uint256 rating;
 
-    address[100] public tickets;
-    uint256 public countTickets = 100;
-    uint256 public jackPot = 0;
-    uint256 public ticketPrice = 10;
-    uint256 public toJackPotFromEveryTicket = 4;
-    uint256 public xPrize = 2;
-    uint256 public lastWinNumber;
-    uint256 public numberGame = 0;
-    mapping (bytes32 => Doctor[]) public specializationDoctors;
-    mapping (address => Doctor[]) public areaOfDoctor;
-    
-    enum Specialisation {
-      DANTIST,
-      GINECOLOGIST,
-      SURGIN
     }
 
-    event WinnersLotteriesNumbers(
-        uint256 jackPotNumber,
-        uint256 winnerMinNumber,
-        uint256 winnerMaxNumber
-    );
-    event LotteryBought(uint256 LotteryNumber);
-
+    enum Specialisation {
+          DANTIST,
+          GINECOLOGIST,
+          SURGIN
+    }
+    event DoctorAddInfo( address doctorEthAddress, string name, string resumeUrl, string area, uint256 rating);
     constructor()
         public
         CaravanToken(
-            countTickets * ticketPrice,
+            totalTokens,
             "Caravan Token",
             0,
             "CRTN"
         )
     {
-        clearTickets();
+        doctorCount = 0;
     }
 
-    function registerDoctor (Doctor doctor) public view returns (uint256){
-      require(address(doctor.doctorEthAddress) == msg.sender, "The doctor is registerd");
-      return ticketPrice;
+
+    function registerDoctor (string memory nameDoctor, string memory  resumeFromUrl, string memory  areaDoctor) public returns (bool success) {
+      // require((areaOfDoctor[msg.sender].length > 0), "The doctor is registerd");
+      Doctor memory doctor = Doctor({doctorEthAddress: msg.sender, name: nameDoctor, resumeUrl: resumeFromUrl, area: areaDoctor, rating: 0});
+      areaOfDoctor[msg.sender] = doctor;
+      totalDoctors[doctorCount] = doctor;
+      doctorCount++;
+      emit DoctorAddInfo(doctor.doctorEthAddress, doctor.name, doctor.resumeUrl, doctor.area, doctor.rating);
+      return true;
     }
 
-    function buyTicket(uint256 ticketNum) public returns (bool success) {
-        require((ticketNum > 0) || (ticketNum <= countTickets), "wrong number");
-        require(
-            balanceOf[msg.sender] > ticketPrice,
-            "the balance of the player less than ticketPrice"
-        );
-        require(
-            tickets[ticketNum] == address(0),
-            "count of tickets have to more than 0"
-        );
-        balanceOf[msg.sender] = balanceOf[msg.sender].sub(ticketPrice);
-        jackPot = jackPot.add(toJackPotFromEveryTicket);
-        tickets[ticketNum] = msg.sender;
-        emit LotteryBought(ticketNum);
+    function buyTicket() public pure returns (bool) {
+
+        // balanceOf[msg.sender] = balanceOf[msg.sender].sub(ticketPrice);
+
         return true;
     }
 
-    function play() public onlyOwner { 
-        lastWinNumber = uint8(
-            (uint256(keccak256(abi.encode(block.timestamp, block.difficulty))) %
-                countTickets) + 1
-        );
-        if (tickets[lastWinNumber] != address(0)) {
-            balanceOf[tickets[lastWinNumber]] = balanceOf[tickets[lastWinNumber]]
-                .add(jackPot);
-            setWinnerResults(tickets[lastWinNumber], numberGame, jackPot);
-            jackPot = 0;
-        }
 
-        //Winner number more then 0
-        uint256 minNumberOfWin = lastWinNumber.sub(lastWinNumber % 10).add(1);
-        uint256 maxNumWin = minNumberOfWin.add(9);
 
-        for (uint256 i = minNumberOfWin; i < maxNumWin; i++) {
-            if (tickets[i] != address(0)) {
-                balanceOf[tickets[i]] = balanceOf[tickets[i]].add(
-                    ticketPrice * xPrize
-                );
-                setWinnerResults(tickets[i], numberGame, ticketPrice * xPrize);
-            }
-        }
-        emit WinnersLotteriesNumbers(lastWinNumber, minNumberOfWin, maxNumWin);
-        clearTickets();
+    function getDoctors() public view returns (Doctor[] memory ) {
+        Doctor[] memory doctors = new Doctor[](doctorCount);
+      for (uint i = 0; i < doctorCount; i++) {
+          Doctor storage doc = totalDoctors[i];
+          doctors[i] = doc;
+      }
+      return doctors;
     }
 
-    function setLotteryParameters(
-        uint256 newTicketPrice,
-        uint256 newToJackPotFromEveryTicket,
-        uint256 newXPrize
-    ) public onlyOwner {
-        ticketPrice = newTicketPrice;
-        toJackPotFromEveryTicket = newToJackPotFromEveryTicket;
-        xPrize = newXPrize;
-    }
-
-    function getTickets() public view returns (address[100] memory) {
-        return tickets;
-    }
-
-    function clearTickets() private {
-        numberGame++;
-        for (uint256 j = 0; j < countTickets; j++) {
-            tickets[j] = address(0);
-        }
-    }
 }

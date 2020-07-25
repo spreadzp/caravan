@@ -5,6 +5,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
@@ -34,6 +35,7 @@ import { DropzoneDirective } from './shared/directives/dropzone.directive';
 import { FireBaseConfig } from 'src/environments/firebase.config';
 import { CabinetService } from './shared/services/cabinet.service';
 import { CypherService } from './shared/services/cypher.service';
+import { ContractService } from './shared/services/contract.service';
 
 @NgModule({
   declarations: [
@@ -65,9 +67,10 @@ import { CypherService } from './shared/services/cypher.service';
     MatDialogModule,
     AngularFireModule.initializeApp(FireBaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    MatSnackBarModule
   ],
-  providers: [Web3Service, DoctorService, PatientService, OrderService, FileService, CabinetService, CypherService],
+  providers: [Web3Service, DoctorService, PatientService, OrderService, FileService, CabinetService, CypherService, ContractService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
