@@ -18,6 +18,7 @@ export class UploaderComponent implements OnInit {
   fileContent: string | ArrayBuffer = '';
   encryptedContent: string | ArrayBuffer = '';
   decryptedContent = '';
+
   constructor(private fstorage: FileService, private cypherService: CypherService ) {}
   ngOnInit() {
     this.fstorage.urlUploadedFile.subscribe(newUrl => this.downloadURL = newUrl);
@@ -28,25 +29,18 @@ export class UploaderComponent implements OnInit {
     } );
     this.cypherService.decryptedMessage.subscribe(message => this.decryptedContent = message );
   }
+
   toggleHover(event: boolean) {
     this.isHovering = event;
   }
 
   onDrop(files: FileList) {
-    // console.log('files :>> ', files);
     for (let i = 0; i < files.length; i++) {
       this.files.push(files.item(i));
     }
   }
 
   createEncFile(encryptedContent: string | ArrayBuffer) {
-    // const file = new File([encryptedContent], "patient.txt", {
-    //   type: "text/plain",
-    // });
-    // console.log('encryptedContent :>> ', encryptedContent);
-    // console.log('file :>> ', file);
-    // const files: FileList = new FileList();
-    // files.item[0] = file;
     console.log('encryptedContent :>> ', encryptedContent);
     if((encryptedContent).toString().length > 50) {
       const list = new DataTransfer();
@@ -58,18 +52,13 @@ export class UploaderComponent implements OnInit {
     }
 
   }
-  async onChange($event) {
-    // console.log(' event.target[ ] :>> ', $event.target['files']);
 
+  async onChange($event) {
     await this.readText($event.target['files'], true);
     if (this.encryptedContent !== '') {
 
     }
-
-    // console.log('pathToBucket :>> ', this.pathToBucket);
   }
-
-
 
   public readText(fileList: FileList, isEncrypt: boolean): void {
     const file = fileList[0];
@@ -82,14 +71,11 @@ export class UploaderComponent implements OnInit {
       } else {
         this.cypherService.decrypted(self.fileContent);
       }
-
-
     };
     fileReader.readAsText(file);
   }
 
   showPreview($event) {
-    // console.log('event.target :>> ', event.target);
     this.selectedImage = event.target['files'][0];
   }
 }
