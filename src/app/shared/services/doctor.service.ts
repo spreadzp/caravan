@@ -11,6 +11,7 @@ export class DoctorService {
     resumeUrl: 'string',
     specialization: 'string',
     rating: 1,
+    servicePrice: 50,
     orders: 'string'
   },
   {
@@ -18,6 +19,7 @@ export class DoctorService {
     resumeUrl: 'url2',
     specialization: 'asfdaf4',
     rating: 3,
+    servicePrice: 50,
     orders: 'string'
   },
   {
@@ -25,6 +27,7 @@ export class DoctorService {
     resumeUrl: 'string',
     specialization: 'string',
     rating: 5,
+    servicePrice: 50,
     orders: 'string'
   },
   ];

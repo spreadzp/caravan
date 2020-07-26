@@ -3,5 +3,6 @@ export interface Cabinet {
   resumeUrl: string;
   specialization: string;
   rating: number;
+  servPrice: number;
   orders: string;
 }

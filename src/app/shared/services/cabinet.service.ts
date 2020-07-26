@@ -8,9 +8,10 @@ import { Cabinet } from '../interfaces/cabinet.interface';
 export class CabinetService {
   cabinets: Cabinet[] = [{
     name: 'John',
-    resumeUrl: 'string',
+    resumeUrl: '',
     specialization: 'therapist',
     rating: 0,
+    servPrice: 50,
     orders: ''
   }
   ];

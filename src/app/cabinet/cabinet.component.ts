@@ -20,7 +20,7 @@ export class CabinetComponent implements OnInit {
   cabinets: Cabinet[] = [];
   urlClientData = '';
   activeAccount = '';
-  displayedColumns = ['name', 'resumeUrl', 'specialization', 'rating',
+  displayedColumns = ['name', 'resumeUrl', 'specialization', 'rating', 'servPrice',
     'orders', 'uploadInfo'];
   constructor(private cabinetService: CabinetService, private dialog: MatDialog,
               private fstorage: FileService, private web3Service: Web3Service,
@@ -54,7 +54,8 @@ export class CabinetComponent implements OnInit {
       const t = deployed.then((contract) => {
         console.log('contract :>> ', contract);
         console.log('this.activeAccount :>> ', this.activeAccount);
-        contract.registerDoctor(cabinet.name, this.urlClientData, cabinet.specialization, { from: this.activeAccount, gas: 900000 })
+        contract.registerDoctor(cabinet.name, this.urlClientData,
+           cabinet.specialization, cabinet.servPrice, { from: this.activeAccount, gas: 900000 })
         // contract.totalTokens.call({ from: this.activeAccount})
           .then((result) => { // set current address !!!
             console.log('result :>> ', result);

@@ -17,7 +17,7 @@ export class DoctorsComponent implements OnInit {
   isMobile = false;
   showTable = false;
   doctors: Doctor[] = [];
-  displayedColumns = ['name', 'resumeUrl', 'specialization', 'rating',
+  displayedColumns = ['name', 'resumeUrl', 'specialization', 'rating', 'servicePrice',
     'orders', 'info', 'order'];
   urlClientData = '';
   activeAccount = '';
@@ -60,6 +60,20 @@ export class DoctorsComponent implements OnInit {
   makeOrder(doctor: Doctor) {
 console.log('doctor :>> ', doctor);
 console.log('this.urlClientData :>> ', this.urlClientData);
+this.contractService.getJpContract().subscribe(deployed => {
+  console.log('deployed :>> ', deployed);
+  const t = deployed.then((contract) => {
+    console.log('contract :>> ', contract);
+    console.log('this.activeAccount :>> ', this.activeAccount);
+    contract.makeOrder(0, { from: this.activeAccount, gas: 900000 })
+      // contract.totalTokens.call({ from: this.activeAccount})
+      .then((result) => { // set current address !!!
+        console.log('result :>> ', result);
+        this.doctors = [...result];
+      });
+  }
+  );
+});
 
   }
 

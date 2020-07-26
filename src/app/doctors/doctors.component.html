@@ -30,6 +30,13 @@
         {{doctor.rating}}
       </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="servicePrice">
+      <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+      <mat-cell *matCellDef="let doctor">
+        <span class="mobile-label">Price:</span>
+        {{doctor.servicePrice}}
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="orders">
       <mat-header-cell *matHeaderCellDef> Orders </mat-header-cell>
       <mat-cell *matCellDef="let doctor">

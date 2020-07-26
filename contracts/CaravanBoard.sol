@@ -1,5 +1,6 @@
 // pragma solidity >=0.4.21 <0.7.0;
 pragma experimental ABIEncoderV2;
+
 // pragma solidity ^0.6.1;
 
 contract IFactRegistry {
@@ -94,7 +95,7 @@ library SafeMath {
     }
 }
 
-contract  tokenRecipient  {
+contract tokenRecipient {
     function receiveApproval(
         address _from,
         uint256 _value,
@@ -318,83 +319,163 @@ contract CaravanStatistics {
     }
 }
 
-contract Order {
-    bytes32 hashOrder;
-    address patient;
-    address doctor;
-    uint256 priceOrder;
-    bytes32 urlEncryptedResume;
-    bytes32 urlEncryptedData;
-    bytes32 specialization;
-    bool hasPerfomed;
-    uint256 amount;
-}
+// contract Order {
+//     bytes32 hashOrder;
+//     address patient;
+//     address doctor;
+//     uint256 priceOrder;
+//     bytes32 urlEncryptedResume;
+//     bytes32 urlEncryptedData;
+//     bytes32 specialization;
+//     bool hasPerfomed;
+//     uint256 amount;
+// }
 
 contract Patient {
-  address patientAddress;
-  uint256 totalPayments;
+    address patientAddress;
+    uint256 totalPayments;
 }
+
 contract CaravanBoard is CaravanToken, Patient, CaravanStatistics {
     using SafeMath for uint256;
-    uint256 public totalTokens = 10 ** 12;
-    uint public doctorCount;
-    mapping (uint => Doctor) public totalDoctors;
-    mapping (address => Doctor) public areaOfDoctor;
-    mapping (address => Order[]) public doctorOrders;
+    uint256 public totalTokens = 10**12;
+    uint256 public registrationPrice = 50;
+    uint256 public changePrice = 20;
+    uint256 public doctorCount;
+    mapping(uint256 => Doctor) public totalDoctors;
+    mapping(address => Doctor) public areaOfDoctor;
+    mapping(bytes32 => Order) public doctorOrders;
+
     struct Doctor {
-      address doctorEthAddress;
-      string name;
-      string resumeUrl;
-      string area;
-      uint256 rating;
-
+        address doctorEthAddress;
+        string name;
+        string resumeUrl;
+        string area;
+        uint256 servicePrice;
+        uint256 rating;
+        bytes32[] hashOrders;
     }
 
-    enum Specialisation {
-          DANTIST,
-          GINECOLOGIST,
-          SURGIN
+    struct Order {
+        bytes32 hashOrder;
+        address patient;
+        address doctor;
+        uint256 priceOrder;
+        bytes32 urlEncryptedConclusion;
+        bytes32 urlEncryptedClientData;
+        bytes32 specialization;
+        bool hasPerformed;
+        uint256 amount;
     }
-    event DoctorAddInfo( address doctorEthAddress, string name, string resumeUrl, string area, uint256 rating);
-    constructor()
-        public
-        CaravanToken(
-            totalTokens,
-            "Caravan Token",
-            0,
-            "CRTN"
-        )
-    {
+
+    enum Specialisation {DANTIST, GINECOLOGIST, SURGIN}
+    event DoctorAddInfo(
+        address doctorEthAddress,
+        string name,
+        string resumeUrl,
+        string area,
+        uint256 rating
+    );
+
+    constructor() public CaravanToken(totalTokens, "Caravan Token", 0, "CRTN") {
         doctorCount = 0;
     }
 
-
-    function registerDoctor (string memory nameDoctor, string memory  resumeFromUrl, string memory  areaDoctor) public returns (bool success) {
-      // require((areaOfDoctor[msg.sender].length > 0), "The doctor is registerd");
-      Doctor memory doctor = Doctor({doctorEthAddress: msg.sender, name: nameDoctor, resumeUrl: resumeFromUrl, area: areaDoctor, rating: 0});
-      areaOfDoctor[msg.sender] = doctor;
-      totalDoctors[doctorCount] = doctor;
-      doctorCount++;
-      emit DoctorAddInfo(doctor.doctorEthAddress, doctor.name, doctor.resumeUrl, doctor.area, doctor.rating);
-      return true;
+    function registerDoctor(
+        string memory nameDoctor,
+        string memory resumeFromUrl,
+        string memory areaDoctor,
+        uint256 servPrice
+    ) public returns (bool success) {
+        // require((areaOfDoctor[msg.sender].length > 0), "The doctor is registerd");
+        require(
+            balanceOf[msg.sender] > registrationPrice,
+            "the balance of the doctor less than registration Price"
+        );
+        bytes32[] memory hashesOrders;
+        Doctor memory doctor = Doctor({
+            doctorEthAddress: msg.sender,
+            name: nameDoctor,
+            resumeUrl: resumeFromUrl,
+            area: areaDoctor,
+            servicePrice: servPrice,
+            rating: 0,
+            hashOrders: hashesOrders
+        });
+        areaOfDoctor[msg.sender] = doctor;
+        totalDoctors[doctorCount] = doctor;
+        doctorCount++;
+        balanceOf[msg.sender] = balanceOf[msg.sender].sub(registrationPrice);
+        emit DoctorAddInfo(
+            doctor.doctorEthAddress,
+            doctor.name,
+            doctor.resumeUrl,
+            doctor.area,
+            doctor.rating
+        );
+        return true;
     }
 
-    function makeDoctorOrder(uint256 indexDoctor) public pure returns (bool) {
+    function makeOrder(uint256 indexDoctor) public returns (bool) {
+        Doctor memory doctor = totalDoctors[indexDoctor];
+        require(
+            balanceOf[msg.sender] > changePrice,
+            "the balance of the doctor less than registration Price"
+        );
+        // totalDoctors[indexDoctor].orders.push();
+        // balanceOf[msg.sender] = balanceOf[msg.sender].sub(ticketPrice);
+        balanceOf[msg.sender] = balanceOf[msg.sender].sub(doctor.servicePrice);
+        // Order newOrder memory = ({});
+        // totalDoctors[indexDoctor].orders.push(newOrder);
+        return true;
+    }
+
+    function changePriceOrder(uint256 indexDoctor, uint256 newPrice)
+        public
+
+        returns (bool)
+    {
+        require(
+            balanceOf[msg.sender] > changePrice,
+            "the balance of the doctor less than registration Price"
+        );
 
         // balanceOf[msg.sender] = balanceOf[msg.sender].sub(ticketPrice);
 
         return true;
     }
 
+    function performeOrder(
+        uint256 indexDoctor,
+        bytes32 hashOrder,
+        bytes32 urlConclusion
+    ) public  returns (bool) {
+        require(
+            doctorOrders[hashOrder].doctor != msg.sender,
+            "the address not equal doctor of the order"
+        );
+        require(
+            balanceOf[msg.sender] > changePrice,
+            "the balance of the doctor less than registration Price"
+        );
+        require(
+            doctorOrders[hashOrder].hasPerformed == false,
+            "the order already performed"
+        );
+        doctorOrders[hashOrder].hasPerformed = true;
+        doctorOrders[hashOrder].urlEncryptedConclusion = urlConclusion;
 
+        // balanceOf[msg.sender] = balanceOf[msg.sender].sub(ticketPrice);
 
-    function getDoctors() public view returns (Doctor[] memory ) {
-        Doctor[] memory doctors = new Doctor[](doctorCount);
-      for (uint i = 0; i < doctorCount; i++) {
-          Doctor storage doc = totalDoctors[i];
-          doctors[i] = doc;
-      }
-      return doctors;
+        return true;
     }
 
+    function getDoctors() public view returns (Doctor[] memory) {
+        Doctor[] memory doctors = new Doctor[](doctorCount);
+        for (uint256 i = 0; i < doctorCount; i++) {
+            Doctor memory doc = totalDoctors[i];
+            doctors[i] = doc;
+        }
+        return doctors;
+    }
 }

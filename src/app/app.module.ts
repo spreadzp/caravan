@@ -4,6 +4,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -35,6 +37,9 @@ import { DropzoneDirective } from './shared/directives/dropzone.directive';
 import { FireBaseConfig } from 'src/environments/firebase.config';
 import { CabinetService } from './shared/services/cabinet.service';
 import { ContractService } from './shared/services/contract.service';
+import { ExchangeComponent } from './exchange/exchange.component';
+import { BalanceComponent } from './balance/balance.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -52,24 +57,31 @@ import { ContractService } from './shared/services/contract.service';
     UploadTaskComponent,
     UploaderComponent,
     DropzoneDirective,
+    ExchangeComponent,
+    BalanceComponent,
   ],
   exports: [
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatIconModule,
     MatSidenavModule,
     MatTableModule,
     MatButtonModule,
     MatDialogModule,
+    MatFormFieldModule,
     AngularFireModule.initializeApp(FireBaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatInputModule
   ],
-  providers: [Web3Service, DoctorService, PatientService, OrderService, FileService, CabinetService, ContractService],
+  providers: [Web3Service, DoctorService, PatientService, OrderService,
+    FileService, CabinetService, ContractService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

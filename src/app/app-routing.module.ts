@@ -7,10 +7,12 @@ import { PatientsComponent } from './patients/patients.component';
 import { DoctorsComponent } from './doctors/doctors.component';
 import { CabinetComponent } from './cabinet/cabinet.component';
 import { OrdersComponent } from './orders/orders.component';
+import { ExchangeComponent } from './exchange/exchange.component';
 
 
 const routes: Routes = [
   { path: '', component: DoctorsComponent },
+  { path: 'exchange', component: ExchangeComponent },
   { path: 'cabinet', component: CabinetComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'doctors', component: DoctorsComponent },

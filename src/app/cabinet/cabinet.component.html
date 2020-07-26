@@ -30,6 +30,13 @@
         {{ cabinet.rating}}
       </mat-cell>
     </ng-container>
+    <ng-container matColumnDef="servPrice">
+      <mat-header-cell *matHeaderCellDef> Price </mat-header-cell>
+      <mat-cell *matCellDef="let  cabinet">
+        <span class="mobile-label">Price:</span>
+        {{ cabinet.servPrice}}
+      </mat-cell>
+    </ng-container>
     <ng-container matColumnDef="orders">
       <mat-header-cell *matHeaderCellDef> Orders </mat-header-cell>
       <mat-cell *matCellDef="let  cabinet">
