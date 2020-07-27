@@ -1,0 +1,27 @@
+@startuml
+
+title Human Health System (HHS)
+
+
+Patient -> HHS: a patient choise a doctor
+Patient -> HHS: attach a file with data
+HHS <-> EncServ: encrypt data by the doctor public key
+HHS -> FireStorage: save the file with enctrypted data
+FireStorage -> HHS: return url for download the file
+HHS -> SmartContract: create the order as a transaction on blockchain
+Patient -> SmartContract: deposit of tokens CRTN for the order
+HHS -> Doctor: notify the doctor about the order info
+Doctor -> FireStorage: download encrypted file
+HHS <-> EncServ: decrypt data by the doctor private key
+Doctor -> Doctor: work with client data
+Doctor -> HHS: attach a file with report, recommendation, recipe, referral to a laboratory
+HHS <-> EncServ: encrypt data by the client public key
+HHS -> FireStorage: save the file with enctrypted data
+Doctor -> SmartContract: performe the order
+SmartContract -> Doctor: send payment for order
+HHS -> Patient: notify the patient about performed the order
+Patient -> FireStorage: download the encrypted file by the doctor
+HHS <-> EncServ: decrypt data by the client private key
+Patient -> Patient: get the report of the doctor
+
+@enduml
